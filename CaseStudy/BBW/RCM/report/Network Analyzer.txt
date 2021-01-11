@@ -1,0 +1,64 @@
+Network Analyzer
+            Date Created: 2020-03-25
+            Time Created: 18:58:25
+            Execution Time: 00 minutes and 00.203 seconds
+            Author: Copyright 1995-2019 Arcticus Systems AB
+            Description: Rubus Component Model network analysis
+            Version: v7.4.5 64-bit
+
+1. Results
+TABLE: Statistics
+Name                                                                       Value                                                                      
+Iterations                                                                 1                                                                          
+Number of mode combinations                                                1                                                                          
+TABLE: Results
+Constraint                                                  Maximum delay                 Calculated delay              Mode combination
+Latency_Constraint_FL                                       20 ms                         20359 us                      TBD
+Latency_Constraint_FR                                       20 ms                         20267 us                      TBD
+Latency_Constraint_RL                                       20 ms                         20177 us                      TBD
+Latency_Constraint_RR                                       20 ms                         20087 us                      TBD
+
+2. Results for mode configuration 1:
+NXP MPC5744P\e200z4\MICROSAR_task_scheduler_CPU\object_4\Mode
+
+2.1. Latency_Constraint_FL
+TABLE: Constraint Path
+Name                                                                                      Total                         Contribution
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pBrakePedalLDM   0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pBrakeTorqueMap  0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pGlobalBrakeController0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_ABS_FL_Pt        0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pLDM_Brake_FL    20359 us                      20359 us
+
+2.2. Latency_Constraint_FR
+TABLE: Constraint Path
+Name                                                                                      Total                         Contribution
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pBrakePedalLDM   0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pBrakeTorqueMap  0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pGlobalBrakeController0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_ABS_FR_Pt        0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pLDM_Brake_FR    20267 us                      20267 us
+
+2.3. Latency_Constraint_RL
+TABLE: Constraint Path
+Name                                                                                      Total                         Contribution
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pBrakePedalLDM   0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pBrakeTorqueMap  0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pGlobalBrakeController0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_ABS_RL_Pt        0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pLDM_Brake_RL    20177 us                      20177 us
+
+2.4. Latency_Constraint_RR
+TABLE: Constraint Path
+Name                                                                                      Total                         Contribution
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pBrakePedalLDM   0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pBrakeTorqueMap  0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pGlobalBrakeController0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_ABS_RR_Pt        0                             0
+TT_RCM_BBW_NXP_MPC5744P_e200z4_MICROSAR_task_scheduler_CPU_object_4_Mode_pLDM_Brake_RR    20087 us                      20087 us
+
+2.5. Response Time Analysis
+
+2.6. Message responsetimes
+
+2.7. Transactions responsetimes

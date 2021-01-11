@@ -1,0 +1,94 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Calibri, Verdana, Arial;
+    margin: 0;
+}
+
+.header {
+    padding: 5px;
+    text-align: left;
+    background: #a2daf3;
+    color: #5490cc;
+}
+
+.footer {
+    padding: 5px;
+    text-align: left;
+    background: #a2daf3;
+    color: #5490cc;
+    font-size: 80%;
+}
+
+.main {
+    flex: 100%;
+    padding: 20px;
+    background-color: white;
+    color: #747474;
+}
+
+p {
+}
+
+li {
+    list-style: outside;
+}
+
+ul  {
+    text-align: Left;
+    list-style-type: square;
+}
+
+ul ul {
+    list-style-type: square;
+}
+
+menu {
+}
+
+table {
+    text-align: left;
+    border-collapse: collapse;
+	border: 1px solid #ddd;
+}
+
+th {
+	padding: 5px;
+    text-align: left;
+    background-color: #a2daf3;
+    color: #5490cc;
+	border: 1px solid #ddd;
+}
+
+td {
+	padding: 5px;
+    text-align: left;
+    color: #747474;
+	border: 1px solid #ddd;
+}
+
+h1 {
+    color: #3399FF;
+}
+
+h2 {
+    color: #3399FF;
+}
+
+h3 {
+    color: #3399FF;
+}
+
+h4 {
+    color: #3399FF;
+}
+
+h5 {
+    color: #3399FF;
+}
+
+code { 
+    font-family: "Courier New"; 
+}
