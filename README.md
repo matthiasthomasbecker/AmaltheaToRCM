@@ -5,8 +5,9 @@ The repository contains three parts.Besides the automated transformation from Am
 ## Automated Transformation
 
 The automated transformation is the realisation of the proposed mapping scheme from Amalthea to RCM.
-The software is setup as <a href="https://gradle.org/">Gradle</a> project and can therefore be used 
-The implementation build on the available infrastructure of the <a href="https://www.eclipse.org/app4mc/">App4CM</a> project to load, modify and save Amalthea models.
+The software is setup as <a href="https://gradle.org/">Gradle</a> project and can therefore be used as is (or imported as Gradle project in any Eclipse based IDE).
+
+The implementation builds on the available infrastructure of the <a href="https://www.eclipse.org/app4mc/">App4CM</a> project to load, modify and save Amalthea models.
 
 ## Case Study
 
@@ -14,6 +15,10 @@ The implementation build on the available infrastructure of the <a href="https:/
 This case study comprises a BBW application consisting of 11 runnables and tasks as well as 10 labels used for communication.
 * <b>WATERS 2017 Industrial Challenge</b>
 This case study is the <a href="https://www.ecrts.org/archives/index652a.html?id=ecrts17">2017 WATERS Industrial Challenge</a>. The application consists of more than 1200 runnables that are mapped to 21 tasks, and 10000 labels used for communication.
+The WATERS 2017 Amalthea model has been modified as follows:
+  * Migrated to version 0.9.7
+  * Added the unit "Hz" to the clock domain
+  * Removed the feature "accessElement" from the model as it was no longer supported after model migration. 
 
 ## Expert Interviews
 

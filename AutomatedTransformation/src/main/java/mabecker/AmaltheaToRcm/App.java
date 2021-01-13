@@ -13,95 +13,114 @@ import org.apache.commons.cli.ParseException;
 import org.eclipse.app4mc.amalthea.model.Amalthea;
 import org.eclipse.app4mc.amalthea.model.io.AmaltheaLoader;
 
+import mabecker.AmaltheaToRcm.RCM.BackAnnotation;
 import mabecker.AmaltheaToRcm.transformation.AmaltheaToRCM;
 
 public class App {
 
-	private final static int EXPERIMENT_ROUNDS = 1;
+	private final static int EXPERIMENT_ROUNDS = 1000;
+	
+	private static String amaltheaModel = null;
+	private static String rcmPath = null;
+
+	private static boolean transform = false;
+	private static boolean backannotate = false;
+	
 	
     @SuppressWarnings("unused")
 	public static void main(String[] args) {
     	
-    	Amalthea model = null;
-    	Options options = new Options();
-    	options.addOption("a", "amalthea", true, "Path to the Amalthea model of the application");
+    	parseArguments(args);
     	
-    	CommandLineParser parser = new DefaultParser();
-		try {
-			CommandLine cmd = parser.parse( options, args);
-	    	String amaltheaModel = cmd.getOptionValue("a");
-			if (amaltheaModel != null) {
-				System.out.println("Model: " + amaltheaModel);
-			}
+    	Amalthea model = null;
+			
+		double[] setupTime = new double[EXPERIMENT_ROUNDS];
+		double[] transformationTime = new double[EXPERIMENT_ROUNDS];
+		double[] exportTime = new double[EXPERIMENT_ROUNDS];
+		double[] annotateTime = new double[EXPERIMENT_ROUNDS];
+		double[] totalTime = new double[EXPERIMENT_ROUNDS];
+			
+		for (int i = 0; i < EXPERIMENT_ROUNDS; i++) {
+			
+			double startTime = System.nanoTime();
+			
+	        File inputFile = new File(amaltheaModel);
+	        model = null;
+	        model = AmaltheaLoader.loadFromFile(inputFile);
 	        
-			double[] setupTime = new double[EXPERIMENT_ROUNDS];
-			double[] transformationTime = new double[EXPERIMENT_ROUNDS];
-			double[] exportTime = new double[EXPERIMENT_ROUNDS];
-			double[] totalTime = new double[EXPERIMENT_ROUNDS];
-			
-			for (int i = 0; i < EXPERIMENT_ROUNDS; i++) {
-			
-				double startTime = System.nanoTime();
-				
-		        File inputFile = new File(amaltheaModel);
-		        model = null;
-		        model = AmaltheaLoader.loadFromFile(inputFile);
+	        if (model == null) {
+	        	System.err.println("Problem loading the Amalthea model!");
+	    		System.exit(1);
+	        }
 		        
-		        if (model == null) {
-		        	System.err.println("Problem loading the Amalthea model!");
-		    		System.exit(1);
-		        }
-		        
+	        /**
+	         * Amalthea -> RCM
+	         */
+	        if (transform) {
 		        AmaltheaToRCM transform = new AmaltheaToRCM(model, getFileNameWithoutExtension(inputFile));
-		        
+			      
 		        double startTransformTime = System.nanoTime();
-		        
+			        
 		        transform.tranformModel();
-		        
+			        
 		        double startExportTime = System.nanoTime();
-		        
-		        transform.exportRCM();
+			        
+		        transform.exportRCM(rcmPath);
 		        
 		        double endTime = System.nanoTime();
 		        
-		        setupTime[i] = startTransformTime - startTime;
-		        transformationTime[i] = startExportTime - startTransformTime;
-		        exportTime[i] = endTime - startExportTime;
-		        totalTime[i] = endTime - startTime;
-	        
-			}
-			
+			    setupTime[i] = startTransformTime - startTime;
+			    transformationTime[i] = startExportTime - startTransformTime;
+			    exportTime[i] = endTime - startExportTime;
+			    totalTime[i] = endTime - startTime;
+	        } 
+	        /**
+	         * RCM -> Amalthea (Back-Annotation)
+	         */
+	        else if (backannotate) {
+	        	double startAnnotateTime = System.nanoTime();
+	        	BackAnnotation back = new BackAnnotation(rcmPath, amaltheaModel, model);
+	        	back.annotate();
+	        	double endTime = System.nanoTime();
+	        	
+	        	setupTime[i] = startAnnotateTime - startTime;
+	        	annotateTime[i] =  endTime - startAnnotateTime;
+			    totalTime[i] = endTime - startTime;
+	        }
+		}	
+		
+		if (transform) {
 			if (EXPERIMENT_ROUNDS > 1) {
 				double[] resultSetupTime = new double[4];
 				double[] resultTransformationTime = new double[4];
 				double[] resultExportTime = new double[4];
 				double[] resultTotalTime = new double[4];
-				
-				
+					
+					
 				/* Calculate minimum values*/
 				resultSetupTime[0] = calculateMin(setupTime);
 				resultTransformationTime[0] = calculateMin(transformationTime);
 				resultExportTime[0] = calculateMin(exportTime);
 				resultTotalTime[0] = calculateMin(totalTime);
-				
+					
 				/* Calculate maximum values*/
 				resultSetupTime[1] = calculateMax(setupTime);
 				resultTransformationTime[1] = calculateMax(transformationTime);
 				resultExportTime[1] = calculateMax(exportTime);
 				resultTotalTime[1] = calculateMax(totalTime);
-				
+					
 				/* Calculate average values*/
 				resultSetupTime[2] = calculateAvrg(setupTime);
 				resultTransformationTime[2] = calculateAvrg(transformationTime);
 				resultExportTime[2] = calculateAvrg(exportTime);
 				resultTotalTime[2] = calculateAvrg(totalTime);
-				
+					
 				/* Calculate standard deviation values*/
 				resultSetupTime[3] = calculateSD(setupTime);
 				resultTransformationTime[3] = calculateSD(transformationTime);
 				resultExportTime[3] = calculateSD(exportTime);
 				resultTotalTime[3] = calculateSD(totalTime);
-				
+					
 				System.out.println("================================");
 				System.out.println("= Measurements [" + EXPERIMENT_ROUNDS + " Experiments]");
 				System.out.println("================================");
@@ -110,25 +129,106 @@ public class App {
 			    System.out.println("Transformation Time:\t" + getResultString(resultTransformationTime)); 
 			    System.out.println("Export Time:\t\t" + getResultString(resultExportTime));
 				System.out.println("Total Time:\t\t" + getResultString(resultTotalTime));
-				
+					
 			} else {
 				System.out.println("================================");
 				System.out.println("= Measurements                 =");
 				System.out.println("================================");
 				System.out.println("Setup Time:\t\t" + setupTime[0]/1000000 + " ms");
-			    System.out.println("Transformation Time:\t" + transformationTime[0]/1000000 + " ms"); System.out.println("Export Time:\t\t" + exportTime[0]/1000000 + " ms");
+				System.out.println("Transformation Time:\t" + transformationTime[0]/1000000 + " ms"); 
+				System.out.println("Export Time:\t\t" + exportTime[0]/1000000 + " ms");
 				System.out.println("Total Time:\t\t" + totalTime[0]/1000000 + " ms");
 			}
+		}else if (backannotate) {
+			if (EXPERIMENT_ROUNDS > 1) {
+				double[] resultSetupTime = new double[4];
+				double[] resultAnnotationTime = new double[4];
+				double[] resultTotalTime = new double[4];
+				
+				/* Calculate minimum values*/
+				resultSetupTime[0] = calculateMin(setupTime);
+				resultAnnotationTime[0] = calculateMin(annotateTime);
+				resultTotalTime[0] = calculateMin(totalTime);
+					
+				/* Calculate maximum values*/
+				resultSetupTime[1] = calculateMax(setupTime);
+				resultAnnotationTime[1] = calculateMax(annotateTime);
+				resultTotalTime[1] = calculateMax(totalTime);
+					
+				/* Calculate average values*/
+				resultSetupTime[2] = calculateAvrg(setupTime);
+				resultAnnotationTime[2] = calculateAvrg(annotateTime);
+				resultTotalTime[2] = calculateAvrg(totalTime);
+					
+				/* Calculate standard deviation values*/
+				resultSetupTime[3] = calculateSD(setupTime);
+				resultAnnotationTime[3] = calculateSD(annotateTime);
+				resultTotalTime[3] = calculateSD(totalTime);
+				
+				System.out.println("================================");
+				System.out.println("= Measurements [" + EXPERIMENT_ROUNDS + " Experiments]");
+				System.out.println("================================");
+				
+				System.out.println("Setup Time:\t\t" + getResultString(resultSetupTime));
+			    System.out.println("Annotation Time:\t" + getResultString(resultAnnotationTime)); 
+				System.out.println("Total Time:\t\t" + getResultString(resultTotalTime));
+			} else {
+				System.out.println("================================");
+				System.out.println("= Measurements                 =");
+				System.out.println("================================");
+				System.out.println("Setup Time:\t\t" + setupTime[0]/1000000 + " ms");
+				System.out.println("Annotation Time:\t" + annotateTime[0]/1000000 + " ms"); 
+				System.out.println("Total Time:\t\t" + totalTime[0]/1000000 + " ms");
+			}
+		}
 			
+    }
+    
+    private static void parseArguments(String[] args) {
+    	Options options = new Options();
+    	options.addOption("a", "amalthea", true, "Path to the Amalthea model of the application.");
+    	options.addOption("r", "rcm", true, "RCM destination path.");
+    	options.addOption("t", "transform", false, "Indicate that the Amalthea model shall be transformed to an RCM model.");
+    	options.addOption("b", "backannotate", false, "Indicate that the Amalthea model shall be annotated with the timing analysis results obtained for the RCM model.");
+    	
+    	CommandLineParser parser = new DefaultParser();
+		try {
+			CommandLine cmd = parser.parse( options, args);
+	    	amaltheaModel = cmd.getOptionValue("a");
+	    	if (amaltheaModel == null) {
+	    		System.err.println("Expect argument -a");
+				System.exit(1);
+	    	}
+			System.out.println("Model: " + amaltheaModel);
 			
-			  
-			 
 	        
+			rcmPath = cmd.getOptionValue("r");
+			if (rcmPath == null) {
+	    		System.err.println("Expect argument -r");
+				System.exit(1);
+	    	}
+			System.out.println("RCM Path: " + rcmPath);
+			
+			if (cmd.hasOption("t") && cmd.hasOption("b")) {
+				System.err.println("Cannot specify transformation and back-annotation at the same time!");
+				System.exit(1);
+			}
+			
+			if (cmd.hasOption("t")) {
+				transform = true;
+				System.out.println("Amalthea -> RCM");
+			} else if (cmd.hasOption("b")) {
+				backannotate = true;
+				System.out.println("RCM -> Amalthea");
+			} else {
+				System.err.println("Direction not specified! -transform or -backannotate");
+				System.exit(1);
+			}
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
     }
-    
     public static String getResultString(double result[]) {
     	String retval = "";
     	

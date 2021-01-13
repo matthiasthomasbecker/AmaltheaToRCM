@@ -792,16 +792,9 @@ public class AmaltheaToRCM {
     	}
 	}
 	
-	public void exportRCM() {
+	public void exportRCM(String _rcmPath) {
 
-		String outputBase = setupFolderStructure(false);
-			
-		/*Circuit.exportComponentsFile(outputBase + "/Common", allCircuits);
-		RcmSystem.exportSystemModelFile(outputBase + "/" + rcmModel.getSystem().getName(), rcmModel.getSystem());
-		
-		for (Node node : rcmModel.getSystem().getNodes()) {
-			Node.exportNodeModelFile(outputBase + "/" + rcmModel.getSystem().getName(), node);
-		}*/
+		String outputBase = makeDirectory(_rcmPath);//setupFolderStructure(false);
 		
 		try {	
 			Document doc = new Document();
@@ -820,7 +813,7 @@ public class AmaltheaToRCM {
 			outter.setXMLOutputProcessor(new OneAttributePerLineXmlProcessor());
 			outter.setFormat(Format.getPrettyFormat());
 		
-			outter.output(doc, new FileWriter(new File(outputBase + "/myxml.rubusModel")));
+			outter.output(doc, new FileWriter(new File(outputBase + "/" + name + ".rubusModel")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

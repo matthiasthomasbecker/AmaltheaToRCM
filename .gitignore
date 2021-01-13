@@ -1,1 +1,7 @@
 *.DS_Store
+/.gradle/
+AutomatedTransformation/output
+.settings
+AutomatedTransformation/bin
+.project
+AutomatedTransformation/.classpath
