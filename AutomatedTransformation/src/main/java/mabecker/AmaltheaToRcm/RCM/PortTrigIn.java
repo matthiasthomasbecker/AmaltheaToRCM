@@ -21,6 +21,10 @@ public class PortTrigIn {
 		this.index = index;
 	}
 
+	public String getName() {
+		return name;
+	}
+	
 	public Element toXml() {
 		
 		Element portTrigIn = new Element("PortTrigIn");

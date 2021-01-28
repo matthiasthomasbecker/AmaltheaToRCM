@@ -8,7 +8,7 @@ public class Notes {
 	private String text;
 	
 	public Notes(String _text) {
-		text = _text;
+		text = _text + ".";
 	}
 	
 	public String getText() {

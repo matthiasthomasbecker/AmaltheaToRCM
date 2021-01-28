@@ -10,12 +10,14 @@ public class ReferenceInst {
 	private String	path;//="RCM_Datatypes.rubusModel"
 	private String	reference;//="int16_t"
 	private UUID 	id;
+	private Notes notes;
 	
 	public ReferenceInst(String _name) {
 		name = _name;
 		path = "";
 		reference = "";
 		id = UUID.randomUUID();
+		notes = new Notes("");
 	}
 	
 	public UUID getId() {
@@ -54,6 +56,8 @@ public class ReferenceInst {
 		referenceInstance.setAttribute("Path", path);
 		referenceInstance.setAttribute("Reference", reference);
 		referenceInstance.setAttribute("UUID", id.toString());
+		
+		referenceInstance.addContent(notes.toXml());
 		
 		return referenceInstance;
 	}

@@ -136,7 +136,7 @@ public class AmaltheaToRCM {
          */
         for (Node node : rcmModel.getSystem().getNodes()) {
         	for (Core core : node.getCores()) {
-        		core.generateDataLinks();		
+        		core.getPartition().getApplication().getMode().generateDataLinks();		
         	}
         }
         
@@ -149,7 +149,7 @@ public class AmaltheaToRCM {
         	for (Core core : node.getCores()) {
 		        System.out.println("\nData Links Core: " + core.getName());
 				System.out.println("------------------------------------------------------------");
-				for (LinkData dataLink : core.getDataLinks()) {
+				for (LinkData dataLink : core.getPartition().getApplication().getMode().getDataLinks()) {
 					System.out.println(dataLink.toString() + "\n");
 				}
         	}
@@ -259,7 +259,7 @@ public class AmaltheaToRCM {
 		/* Get the cores the start and end SWC are allocated to */
 		for (Node node : rcmModel.getSystem().getNodes()) {
 			for (Core core : node.getCores()) {
-				for (Circuit swc : core.getCircuits()) {
+				for (Circuit swc : core.getPartition().getApplication().getMode().getCircuits()) {
 					if (swc.equals(_chainStart)) {
 						chainStartCore = core;
 					} else if (swc.equals(_chainEnd)) {
@@ -304,7 +304,7 @@ public class AmaltheaToRCM {
 		if (LatencyType.REACTION == _type) {
 			/* Create a reaction delay start element and connect it to the port of the start SWC created above */
 			ReactionDataStart reactionStart = new ReactionDataStart();
-			chainStartCore.addReactionStart(reactionStart);
+			chainStartCore.getPartition().getApplication().getMode().addReactionStart(reactionStart);
 			LinkData startLink = new LinkData(null);
 			
 			CrossRef startSource = new CrossRef("ObjectSource");
@@ -316,11 +316,11 @@ public class AmaltheaToRCM {
 			startLink.addCrossRef(startSource);
 			startLink.addCrossRef(startDest);
 			
-			chainEndCore.addDataLink(startLink);
+			chainEndCore.getPartition().getApplication().getMode().addDataLink(startLink);
 			
 			/* Create a reaction delay end element and connect it to the port of the end SWC created above */
 			ReactionDataEnd reactionEnd = new ReactionDataEnd(_maxDelay);
-			chainEndCore.addReactionEnd(reactionEnd);
+			chainEndCore.getPartition().getApplication().getMode().addReactionEnd(reactionEnd);
 			LinkData endLink = new LinkData(null);
 			
 			CrossRef endSource = new CrossRef("ObjectSource");
@@ -332,11 +332,11 @@ public class AmaltheaToRCM {
 			endLink.addCrossRef(endSource);
 			endLink.addCrossRef(endDest);
 			
-			chainEndCore.addDataLink(endLink);
+			chainEndCore.getPartition().getApplication().getMode().addDataLink(endLink);
 		} else if (LatencyType.AGE == _type) {
 			/* Create a age delay start element and connect it to the port of the start SWC created above */
 			AgeDataStart ageStart = new AgeDataStart();
-			chainStartCore.addAgeStart(ageStart);
+			chainStartCore.getPartition().getApplication().getMode().addAgeStart(ageStart);
 			LinkData startLink = new LinkData(null);
 			
 			CrossRef startSource = new CrossRef("ObjectSource");
@@ -348,11 +348,11 @@ public class AmaltheaToRCM {
 			startLink.addCrossRef(startSource);
 			startLink.addCrossRef(startDest);
 			
-			chainEndCore.addDataLink(startLink);
+			chainEndCore.getPartition().getApplication().getMode().addDataLink(startLink);
 			
 			/* Create a age delay end element and connect it to the port of the end SWC created above */
 			AgeDataEnd ageEnd = new AgeDataEnd(_maxDelay);
-			chainEndCore.addAgeEnd(ageEnd);
+			chainEndCore.getPartition().getApplication().getMode().addAgeEnd(ageEnd);
 			LinkData endLink = new LinkData(null);
 			
 			CrossRef endSource = new CrossRef("ObjectSource");
@@ -364,7 +364,7 @@ public class AmaltheaToRCM {
 			endLink.addCrossRef(endSource);
 			endLink.addCrossRef(endDest);
 			
-			chainEndCore.addDataLink(endLink);
+			chainEndCore.getPartition().getApplication().getMode().addDataLink(endLink);
 		}
 	}
 
@@ -401,7 +401,7 @@ public class AmaltheaToRCM {
 	        		}
 	        		Core core = getDestinationCore(alloc);
 	        	
-	        		for (Circuit swc : core.getCircuits()) {
+	        		for (Circuit swc : core.getPartition().getApplication().getMode().getCircuits()) {
 	        			if (swc.getName().equals(swcName)) {
 	        				return swc;
 	        			}
@@ -420,7 +420,7 @@ public class AmaltheaToRCM {
         								swcName = t.getName() + "_" + r.getName();
 	        							Core core = getDestinationCore(alloc);
 	        				        	
-	        			        		for (Circuit swc : core.getCircuits()) {
+	        			        		for (Circuit swc : core.getPartition().getApplication().getMode().getCircuits()) {
 	        			        			if (swc.getName().equals(swcName)) {
 	        			        				return swc;
 	        			        			}
@@ -465,7 +465,7 @@ public class AmaltheaToRCM {
 	        							swcName = t.getName() + "_" + r.getName();
 	        							Core core = getDestinationCore(alloc);
 	        				        	
-	        			        		for (Circuit swc : core.getCircuits()) {
+	        			        		for (Circuit swc : core.getPartition().getApplication().getMode().getCircuits()) {
 	        			        			if (swc.getName().equals(swcName)) {
 	        			        				return swc;
 	        			        			}
@@ -489,7 +489,7 @@ public class AmaltheaToRCM {
         								swcName = t.getName() + "_" + r.getName();
 	        							Core core = getDestinationCore(alloc);
 	        				        	
-	        			        		for (Circuit swc : core.getCircuits()) {
+	        			        		for (Circuit swc : core.getPartition().getApplication().getMode().getCircuits()) {
 	        			        			if (swc.getName().equals(swcName)) {
 	        			        				return swc;
 	        			        			}
@@ -565,7 +565,7 @@ public class AmaltheaToRCM {
 							
 							Circuit circuit = runnableToCircuit(r, t.getName());
 							System.out.println("RCM SWC:" + circuit.getName());
-							core.addCircuit(circuit);
+							core.getPartition().getApplication().getMode().addCircuit(circuit);
 							tmpCircuits.add(circuit);
 						}
 					}
@@ -609,7 +609,7 @@ public class AmaltheaToRCM {
 		PortTrigOut outPort = new PortTrigOut("TO1");
 		outPort.setIndex(0);
 		periodicTrigger.setPortTrigOut(outPort);
-		core.addTrigClockTT(periodicTrigger);
+		core.getPartition().getApplication().getMode().addTrigClockTT(periodicTrigger);
 		System.out.println("RCM Clock: " + periodicTrigger.getName());
 		
 		/**
@@ -622,7 +622,7 @@ public class AmaltheaToRCM {
 				 */
 				LinkTrig triggerLink = connect(periodicTrigger.getName() + "\\T01", tmpCircuits.get(i).getName() + "\\Unnamed_Interface\\IT");
 				System.out.println("RCM Link: " + periodicTrigger.getName() + "\\T01 ==> " + tmpCircuits.get(i).getName() + "\\Unnamed_Interface\\IT");
-				core.addLinkTrigs(triggerLink);
+				core.getPartition().getApplication().getMode().addLinkTrigs(triggerLink);
 			} else {
 				/**
 				 * All remaining circuits are triggered in a trigger chain
@@ -631,7 +631,7 @@ public class AmaltheaToRCM {
 				Circuit dstCircuit = tmpCircuits.get(0);
 				LinkTrig triggerLink = connect(srcCircuit.getName() + "\\Unnamed_Interface\\OT", dstCircuit.getName() + "\\Unnamed_Interface\\IT");
 				System.out.println("RCM Link: " + srcCircuit.getName() + "\\Unnamed_Interface\\OT" + "\\T01 ==> " + dstCircuit.getName() + "\\Unnamed_Interface\\IT");
-				core.addLinkTrigs(triggerLink);
+				core.getPartition().getApplication().getMode().addLinkTrigs(triggerLink);
 			}
 		}
 		
@@ -644,8 +644,8 @@ public class AmaltheaToRCM {
 		inTrig.setIndex(0);
 		terminator.setPortTrigIn(inTrig);
 		LinkTrig triggerLink = connect(tmpCircuits.get(tmpCircuits.size()-1).getName() + "\\Unnamed_Interface\\OT", terminator.getName() + "\\IT");
-		core.addLinkTrigs(triggerLink);
-		core.addTrigTerminator(terminator);
+		core.getPartition().getApplication().getMode().addLinkTrigs(triggerLink);
+		core.getPartition().getApplication().getMode().addTrigTerminator(terminator);
 		System.out.println("RCM Link: " + tmpCircuits.get(tmpCircuits.size()-1).getName() + "\\Unnamed_Interface\\OT" + "\\T01 ==> " + terminator.getName() + "\\IT");
 		
 		System.out.println();

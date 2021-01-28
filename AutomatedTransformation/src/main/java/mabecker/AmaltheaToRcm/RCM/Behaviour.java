@@ -21,7 +21,7 @@ public class Behaviour {
 		name = _name;
 		id = UUID.randomUUID();
 		notes = new Notes("");
-		entry = "";
+		entry = name;
 	}
 	
 	public void setRuntime(Runtime runtime) {
@@ -56,8 +56,8 @@ public class Behaviour {
 		
 		Element behaviour = new Element("Behaviour");
 		
-		behaviour.setAttribute("Entry", name);
-		behaviour.setAttribute("Name", entry);
+		behaviour.setAttribute("Entry", entry);
+		behaviour.setAttribute("Name", name);
 		behaviour.setAttribute("UUID", id.toString());
 		
 		behaviour.addContent(notes.toXml());

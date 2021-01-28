@@ -12,11 +12,14 @@ public class Runtime {
 	private String ctrlStack;
 	private String timeBCET;
 	private String timeWCET;
+
+	private Notes notes;
 	
 	public Runtime(String _name) {
 		name = _name;
 		id = UUID.randomUUID();
 		ctrlStack = "0";
+		notes = new Notes("");
 	}
 	
 	public void setTimeBCET(String timeBCET) {
@@ -40,6 +43,8 @@ public class Runtime {
 		runtime.setAttribute("TimeBCET", timeBCET);
 		runtime.setAttribute("TimeWCET", timeWCET);
 		runtime.setAttribute("UUID", id.toString());
+		
+		runtime.addContent(notes.toXml());
 		
 		return runtime;
 	}

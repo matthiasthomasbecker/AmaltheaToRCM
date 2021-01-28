@@ -18,7 +18,7 @@ import mabecker.AmaltheaToRcm.transformation.AmaltheaToRCM;
 
 public class App {
 
-	private final static int EXPERIMENT_ROUNDS = 1000;
+	private final static int EXPERIMENT_ROUNDS = 1;
 	
 	private static String amaltheaModel = null;
 	private static String rcmPath = null;
