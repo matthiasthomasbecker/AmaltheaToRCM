@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright Arcticus Systems AB, All rights reserved.
+  The format and content in the File is protected by copyright.
+  The File is furnished under a licence and may only be used in
+  accordance with the terms of this licence.
+-->
+<document
+	Model="WORKSPACE"
+	UUID="bc0b0bf4-a489-4e8e-8bab-fae9e566fa01"
+	Version="2017-01-01"
+	>
+	<Workspace
+		ActiveConfiguration="config"
+		ActiveProject=""
+		Name="XXX_WORKSPACE_NAME_XXX"
+		UUID="d17fa038-a3d5-4f44-b770-35eb89423cc2"
+		>
+		<WorkspaceFile
+			Path=".\RCM_Example_4.rubusProject"
+			Reference="XXX_PROJECT_UUID_XXX"
+			UUID="8c87dd18-07de-49c7-bf7b-a878d3d9324e"
+			>
+			<Notes><![CDATA[]]></Notes>
+		</WorkspaceFile>
+		<DependencyItem
+			Active="true"
+			Index="0"
+			Name="item"
+			Reference="XXX_PROJECT_UUID_XXX"
+			UUID="a6ec784f-6f85-43d6-a582-4d7842b67081"
+			>
+			<Notes><![CDATA[]]></Notes>
+		</DependencyItem>
+	</Workspace>
+</document>

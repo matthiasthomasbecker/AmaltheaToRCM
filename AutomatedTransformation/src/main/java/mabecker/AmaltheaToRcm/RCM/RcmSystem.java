@@ -42,6 +42,10 @@ public class RcmSystem {
 		nodes.add(node);
 	}
 
+	public UUID getId() {
+		return id;
+	}
+	
 	public Element toXml(boolean _referenceUse) {
 		
 		Element system = new Element("System");

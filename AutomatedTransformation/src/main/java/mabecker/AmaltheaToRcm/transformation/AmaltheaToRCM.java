@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import mabecker.AmaltheaToRcm.RCM.AgeDataEnd;
 import mabecker.AmaltheaToRcm.RCM.AgeDataStart;
@@ -24,6 +25,8 @@ import mabecker.AmaltheaToRcm.RCM.RCM;
 import mabecker.AmaltheaToRcm.RCM.ReactionDataEnd;
 import mabecker.AmaltheaToRcm.RCM.ReactionDataStart;
 import mabecker.AmaltheaToRcm.RCM.ReferenceInst;
+import mabecker.AmaltheaToRcm.RCM.RubusDesigner;
+import mabecker.AmaltheaToRcm.RCM.RubusProject;
 import mabecker.AmaltheaToRcm.RCM.Runtime;
 import mabecker.AmaltheaToRcm.RCM.Time;
 import mabecker.AmaltheaToRcm.RCM.TrigClockTT;
@@ -796,6 +799,17 @@ public class AmaltheaToRCM {
 
 		String outputBase = makeDirectory(_rcmPath);//setupFolderStructure(false);
 		
+		exportRubusModel(outputBase);
+		
+		RubusProject rubusProject = new RubusProject(rcmModel, outputBase);
+		
+		UUID projectId = rubusProject.export();
+		RubusDesigner rubusDesigner = new RubusDesigner(rcmModel, projectId, outputBase);
+		rubusDesigner.export();
+	}
+	
+	private void exportRubusModel(String _outputBase) {
+		
 		try {	
 			Document doc = new Document();
 			
@@ -813,13 +827,13 @@ public class AmaltheaToRCM {
 			outter.setXMLOutputProcessor(new OneAttributePerLineXmlProcessor());
 			outter.setFormat(Format.getPrettyFormat());
 		
-			outter.output(doc, new FileWriter(new File(outputBase + "/" + name + ".rubusModel")));
+			outter.output(doc, new FileWriter(new File(_outputBase + "/" + name + ".rubusModel")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
- 
+		}	
 	}
+	
 	
 	private String setupFolderStructure(boolean _extended) {
 		
