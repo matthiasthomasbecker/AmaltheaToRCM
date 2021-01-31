@@ -34,7 +34,7 @@ public class TrigClockTT {
 		Element trigClockTT = new Element("TrigClockTT");
 		
 		trigClockTT.setAttribute("Name", name);
-		trigClockTT.setAttribute("Period", timePeriod);
+		trigClockTT.setAttribute("TimePeriod", timePeriod);
 		trigClockTT.setAttribute("UUID", id.toString());
 		
 		trigClockTT.addContent(notes.toXml());

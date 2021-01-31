@@ -15,11 +15,11 @@ public class AgeDataEnd {
 	private PortDataIn	in;
 	private PortDataOut out;
 	
-	public AgeDataEnd(Time _deadline) {
-		name = "Age_" + count;
+	public AgeDataEnd(Time _deadline, String _name) {
+		name = "AgeEnd_" + count;
 		count++;
 		
-		nameUsage = "AgeConstraint";
+		nameUsage = "AgeConstraint_" + _name;
 		id = UUID.randomUUID();
 		
 		notes = new Notes("");

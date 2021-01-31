@@ -27,6 +27,10 @@ public class Partition {
 		return application;
 	}
 	
+	public UUID getId() {
+		return id;
+	}
+	
 	public Element toXml() {
 		Element partition = new Element("Partition");
 		

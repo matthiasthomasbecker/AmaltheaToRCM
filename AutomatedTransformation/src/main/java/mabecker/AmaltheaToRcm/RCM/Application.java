@@ -62,7 +62,7 @@ public class Application {
 	public Element toXml() {
 		Element partition = new Element("Application");
 		
-		partition.setAttribute("Criticality", criticality);
+		partition.setAttribute("Criticallity", criticality);
 		partition.setAttribute("Name", name);
 		partition.setAttribute("NameUsage", nameUsage);
 		partition.setAttribute("UUID", id.toString());

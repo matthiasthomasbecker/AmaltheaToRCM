@@ -13,7 +13,7 @@
 	<Project
 		ActiveConfiguration="config"
 		Name="XXX_PROJECT_NAME_XXX"
-		UUID="XXX_PROJECT_UUID_XXX"
+		UUID="XXX_PROJECT_ID_XXX"
 		>
 		<Configuration
 			ActiveModel="RCM"
@@ -74,7 +74,7 @@
 				DirectoryOutput="$(OutDir)\$(ItemName)"
 				DirectoryReport="$(OutDir)\$(ItemName)\reports"
 				Name="item"
-				Reference="XXX_System_UUID_XXX"
+				Reference="XXX_SYSTEM_ID_XXX"
 				UUID="4cc26628-960c-428a-a4c6-bd8a649d2610"
 				>
 				<PluginGroup
@@ -107,7 +107,7 @@
 				DirectoryOutput="$(OutDir)\$(ItemName)"
 				DirectoryReport="$(OutDir)\$(ItemName)\reports"
 				Name="item_1"
-				Reference="eec4af5b-f8a9-4130-8d54-68152cd3af20"
+				Reference="XXX_NODE_ID_XXX"
 				UUID="4172ef15-f790-47f9-b01f-8b8a3cae42de"
 				>
 				<PluginGroup
@@ -134,7 +134,7 @@
 				DirectoryOutput="$(OutDir)\$(ItemName)"
 				DirectoryReport="$(OutDir)\$(ItemName)\reports"
 				Name="item_2"
-				Reference="63c4ece1-ba9f-48b9-b94e-99ef1168a090"
+				Reference="XXX_PARTITION_ID_XXX"
 				RubusCodeLanguage="LANG_C"
 				RubusDebugNameTable="false"
 				RubusDebugXhpBlueRxPrio="0"

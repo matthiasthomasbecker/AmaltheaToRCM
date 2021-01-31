@@ -9,17 +9,18 @@ import java.util.UUID;
 public class RubusProject {
 
 	private String projectNamePlaceholder = "XXX_PROJECT_NAME_XXX";
-	private String systemIdPlaceholder = "XXX_System_UUID_XXX";
-	private String projectIdPlaceholder = "XXX_PROJECT_UUID_XXX";
+	private String projectIdPlaceholder = "XXX_PROJECT_ID_XXX";
 	private String modelNamePlaceholder = "XXX_RUBUS_MODEL_NAME_XXX";
+
+	private String systemIdPlaceholder = "XXX_SYSTEM_ID_XXX";
+	private String nodeIdPlaceholder = "XXX_NODE_ID_XXX";
+	private String partitionIdPlaceholder = "XXX_PARTITION_ID_XXX";
 	
 	private RCM rcm;
-	private UUID id;
 	private String outputPath;
 	
 	public RubusProject(RCM _rcm, String _outputPath) {
 		rcm = _rcm;
-		id = UUID.randomUUID();
 		outputPath = _outputPath;
 	}
 	
@@ -43,6 +44,10 @@ public class RubusProject {
 					line = line.replace(modelNamePlaceholder, rcm.getSystem().getName());
 				} else if (line.contains(systemIdPlaceholder)) {
 					line = line.replace(systemIdPlaceholder, rcm.getSystem().getId().toString());
+				} else if (line.contains(nodeIdPlaceholder)) {
+					line = line.replace(nodeIdPlaceholder, rcm.getSystem().getNodes().get(0).getId().toString());
+				} else if (line.contains(partitionIdPlaceholder)) {
+					line = line.replace(partitionIdPlaceholder, rcm.getSystem().getNodes().get(0).getCores().get(0).getPartition().getId().toString());
 				} 
 				
 				writer.write(line + "\r\n");

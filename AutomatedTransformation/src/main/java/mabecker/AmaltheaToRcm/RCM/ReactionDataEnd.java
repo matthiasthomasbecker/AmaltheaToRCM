@@ -15,11 +15,11 @@ public class ReactionDataEnd {
 	private PortDataIn	in;
 	private PortDataOut out;
 	
-	public ReactionDataEnd(Time _deadline) {
+	public ReactionDataEnd(Time _deadline, String _name) {
 		name = "Reaction_" + count;
 		count++;
 		
-		nameUsage = "ReactionConstraint";
+		nameUsage = "ReactionConstraint_" + _name;
 		id = UUID.randomUUID();
 		
 		notes = new Notes("");

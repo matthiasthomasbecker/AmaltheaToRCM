@@ -16,7 +16,7 @@ public class LinkTrig {
 	private ArrayList<CrossRef> crossrefs;
 	
 	public LinkTrig() {
-		name = "link_" + count;
+		name = "link_trig_" + count;
 		count++;
 		id = UUID.randomUUID();
 		notes = new Notes("");
@@ -36,7 +36,7 @@ public class LinkTrig {
 		
 		Element link = new Element("LinkTrig");
 		
-		link.setAttribute("Index", Integer.toString(indexLink));
+		link.setAttribute("IndexLink", Integer.toString(indexLink));
 		link.setAttribute("Name", name);
 		link.setAttribute("UUID", id.toString());
 		

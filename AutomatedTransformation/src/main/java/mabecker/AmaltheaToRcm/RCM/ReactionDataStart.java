@@ -13,11 +13,11 @@ public class ReactionDataStart {
 	private PortDataIn	in;
 	private PortDataOut out;
 	
-	public ReactionDataStart() {
+	public ReactionDataStart(String _name) {
 		name = "Reaction_" + count;
 		count++;
 		
-		nameUsage = "ReactionConstraint";
+		nameUsage = "ReactionConstraint_" + _name;
 		id = UUID.randomUUID();
 		
 		notes = new Notes("");

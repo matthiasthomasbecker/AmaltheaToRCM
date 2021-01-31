@@ -39,9 +39,7 @@ import org.eclipse.app4mc.amalthea.model.ActivityGraphItem;
 import org.eclipse.app4mc.amalthea.model.Amalthea;
 import org.eclipse.app4mc.amalthea.model.ConstraintsModel;
 import org.eclipse.app4mc.amalthea.model.EventChain;
-import org.eclipse.app4mc.amalthea.model.EventChainContainer;
 import org.eclipse.app4mc.amalthea.model.EventChainItem;
-import org.eclipse.app4mc.amalthea.model.EventChainItemType;
 import org.eclipse.app4mc.amalthea.model.EventChainLatencyConstraint;
 import org.eclipse.app4mc.amalthea.model.FrequencyDomain;
 import org.eclipse.app4mc.amalthea.model.Group;
@@ -68,7 +66,6 @@ import org.eclipse.app4mc.amalthea.model.impl.PeriodicStimulusImpl;
 import org.eclipse.app4mc.amalthea.model.impl.ProcessEventImpl;
 import org.eclipse.app4mc.amalthea.model.impl.RelativePeriodicStimulusImpl;
 import org.eclipse.app4mc.amalthea.model.impl.RunnableEventImpl;
-import org.eclipse.emf.common.util.EList;
 import org.jdom2.Comment;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -81,7 +78,7 @@ public class AmaltheaToRCM {
 	private RCM			rcmModel;
 	private String 		name;
 	
-	private ArrayList<Circuit> allCircuits;
+	//private ArrayList<Circuit> allCircuits;
 	
 	public AmaltheaToRCM(Amalthea _model, String _name) {
 		if (_model == null) {
@@ -91,7 +88,7 @@ public class AmaltheaToRCM {
 		amaltheaModel = _model;
 		name = _name;
 		
-		allCircuits = new ArrayList<Circuit>();
+		//allCircuits = new ArrayList<Circuit>();
 	}
 	
 	public void tranformModel() {
@@ -235,9 +232,9 @@ public class AmaltheaToRCM {
 							Time maxDelay = new Time(constraint.getMaximum().getValue().toString() + " " + constraint.getMaximum().getUnit().toString());
 							
 							if (LatencyType.AGE == constraint.getType()) {
-								addEndToEndConstraint(chainStart, chainEnd, maxDelay, constraint.getType());
+								addEndToEndConstraint(chainStart, chainEnd, maxDelay, constraint.getType(), chainName);
 							} else if (LatencyType.REACTION == constraint.getType()) {
-								addEndToEndConstraint(chainStart, chainEnd, maxDelay, constraint.getType());
+								addEndToEndConstraint(chainStart, chainEnd, maxDelay, constraint.getType(), chainName);
 							} else {
 								System.err.println("Unsupported end-to-end delay constraint type! " + constraint.getType());
 								System.exit(1);
@@ -255,7 +252,7 @@ public class AmaltheaToRCM {
 	 * @param chainEnd SWC at the end of the data chain.
 	 * @param maxDelay Deadline of the data chain. 
 	 */
-	private void addEndToEndConstraint(Circuit _chainStart, Circuit _chainEnd, Time _maxDelay, LatencyType _type) {
+	private void addEndToEndConstraint(Circuit _chainStart, Circuit _chainEnd, Time _maxDelay, LatencyType _type, String _name) {
 		Core chainStartCore = null;
 		Core chainEndCore = null;
 		
@@ -306,7 +303,7 @@ public class AmaltheaToRCM {
 		
 		if (LatencyType.REACTION == _type) {
 			/* Create a reaction delay start element and connect it to the port of the start SWC created above */
-			ReactionDataStart reactionStart = new ReactionDataStart();
+			ReactionDataStart reactionStart = new ReactionDataStart(_name);
 			chainStartCore.getPartition().getApplication().getMode().addReactionStart(reactionStart);
 			LinkData startLink = new LinkData(null);
 			
@@ -314,7 +311,7 @@ public class AmaltheaToRCM {
 			startSource.setReference(reactionStart.getName() + "\\OD");
 			
 			CrossRef startDest = new CrossRef("ObjectDest");
-			startDest.setReference(_chainStart.getName() + "\\Unnamed_Interface\\" + dataIn.getName());
+			startDest.setReference(_chainStart.getName() + "\\" + _chainStart.getInterface().getName() + "\\" + dataIn.getName());
 			
 			startLink.addCrossRef(startSource);
 			startLink.addCrossRef(startDest);
@@ -322,12 +319,12 @@ public class AmaltheaToRCM {
 			chainEndCore.getPartition().getApplication().getMode().addDataLink(startLink);
 			
 			/* Create a reaction delay end element and connect it to the port of the end SWC created above */
-			ReactionDataEnd reactionEnd = new ReactionDataEnd(_maxDelay);
+			ReactionDataEnd reactionEnd = new ReactionDataEnd(_maxDelay, _name);
 			chainEndCore.getPartition().getApplication().getMode().addReactionEnd(reactionEnd);
 			LinkData endLink = new LinkData(null);
 			
 			CrossRef endSource = new CrossRef("ObjectSource");
-			endSource.setReference(_chainStart.getName() + "\\Unnamed_Interface\\" + dataOut.getName());
+			endSource.setReference(_chainEnd.getName() + "\\" + _chainEnd.getInterface().getName() + "\\" + dataOut.getName());
 			
 			CrossRef endDest = new CrossRef("ObjectDest");
 			endDest.setReference(reactionStart.getName() + "\\ID");
@@ -338,7 +335,7 @@ public class AmaltheaToRCM {
 			chainEndCore.getPartition().getApplication().getMode().addDataLink(endLink);
 		} else if (LatencyType.AGE == _type) {
 			/* Create a age delay start element and connect it to the port of the start SWC created above */
-			AgeDataStart ageStart = new AgeDataStart();
+			AgeDataStart ageStart = new AgeDataStart(_name);
 			chainStartCore.getPartition().getApplication().getMode().addAgeStart(ageStart);
 			LinkData startLink = new LinkData(null);
 			
@@ -346,7 +343,7 @@ public class AmaltheaToRCM {
 			startSource.setReference(ageStart.getName() + "\\OD");
 			
 			CrossRef startDest = new CrossRef("ObjectDest");
-			startDest.setReference(_chainStart.getName() + "\\Unnamed_Interface\\" + dataIn.getName());
+			startDest.setReference(_chainStart.getName() + "\\" + _chainStart.getInterface().getName() + "\\" + dataIn.getName());
 			
 			startLink.addCrossRef(startSource);
 			startLink.addCrossRef(startDest);
@@ -354,12 +351,12 @@ public class AmaltheaToRCM {
 			chainEndCore.getPartition().getApplication().getMode().addDataLink(startLink);
 			
 			/* Create a age delay end element and connect it to the port of the end SWC created above */
-			AgeDataEnd ageEnd = new AgeDataEnd(_maxDelay);
+			AgeDataEnd ageEnd = new AgeDataEnd(_maxDelay, _name);
 			chainEndCore.getPartition().getApplication().getMode().addAgeEnd(ageEnd);
 			LinkData endLink = new LinkData(null);
 			
 			CrossRef endSource = new CrossRef("ObjectSource");
-			endSource.setReference(_chainStart.getName() + "\\Unnamed_Interface\\" + dataOut.getName());
+			endSource.setReference(_chainEnd.getName() + "\\" + _chainEnd.getInterface().getName() + "\\" + dataOut.getName());
 			
 			CrossRef endDest = new CrossRef("ObjectDest");
 			endDest.setReference(ageEnd.getName() + "\\ID");
@@ -623,17 +620,17 @@ public class AmaltheaToRCM {
 				/**
 				 * The first task is connected to the periodic clock
 				 */
-				LinkTrig triggerLink = connect(periodicTrigger.getName() + "\\T01", tmpCircuits.get(i).getName() + "\\Unnamed_Interface\\IT");
-				System.out.println("RCM Link: " + periodicTrigger.getName() + "\\T01 ==> " + tmpCircuits.get(i).getName() + "\\Unnamed_Interface\\IT");
+				LinkTrig triggerLink = connect(periodicTrigger.getName() + "\\TO1", tmpCircuits.get(i).getName() + "\\" + tmpCircuits.get(i).getInterface().getName() + "\\IT");
+				System.out.println("RCM Link: " + periodicTrigger.getName() + "\\TO1 ==> " + tmpCircuits.get(i).getName() + "\\" + tmpCircuits.get(i).getInterface().getName() + "\\IT");
 				core.getPartition().getApplication().getMode().addLinkTrigs(triggerLink);
 			} else {
 				/**
 				 * All remaining circuits are triggered in a trigger chain
 				 */
 				Circuit srcCircuit = tmpCircuits.get(i-1);
-				Circuit dstCircuit = tmpCircuits.get(0);
-				LinkTrig triggerLink = connect(srcCircuit.getName() + "\\Unnamed_Interface\\OT", dstCircuit.getName() + "\\Unnamed_Interface\\IT");
-				System.out.println("RCM Link: " + srcCircuit.getName() + "\\Unnamed_Interface\\OT" + "\\T01 ==> " + dstCircuit.getName() + "\\Unnamed_Interface\\IT");
+				Circuit dstCircuit = tmpCircuits.get(i);
+				LinkTrig triggerLink = connect(srcCircuit.getName() + "\\" + srcCircuit.getInterface().getName() + "\\OT", dstCircuit.getName() + "\\" + dstCircuit.getInterface().getName() + "\\IT");
+				System.out.println("RCM Link: " + srcCircuit.getName() + "\\" + srcCircuit.getInterface().getName() + "\\OT" + "\\T01 ==> " + dstCircuit.getName() + "\\" + dstCircuit.getInterface().getName() + "\\IT");
 				core.getPartition().getApplication().getMode().addLinkTrigs(triggerLink);
 			}
 		}
@@ -646,10 +643,10 @@ public class AmaltheaToRCM {
 		PortTrigIn inTrig = new PortTrigIn("IT");
 		inTrig.setIndex(0);
 		terminator.setPortTrigIn(inTrig);
-		LinkTrig triggerLink = connect(tmpCircuits.get(tmpCircuits.size()-1).getName() + "\\Unnamed_Interface\\OT", terminator.getName() + "\\IT");
+		LinkTrig triggerLink = connect(tmpCircuits.get(tmpCircuits.size()-1).getName() + "\\" + tmpCircuits.get(tmpCircuits.size()-1).getInterface().getName() + "\\OT", terminator.getName() + "\\IT");
 		core.getPartition().getApplication().getMode().addLinkTrigs(triggerLink);
 		core.getPartition().getApplication().getMode().addTrigTerminator(terminator);
-		System.out.println("RCM Link: " + tmpCircuits.get(tmpCircuits.size()-1).getName() + "\\Unnamed_Interface\\OT" + "\\T01 ==> " + terminator.getName() + "\\IT");
+		System.out.println("RCM Link: " + tmpCircuits.get(tmpCircuits.size()-1).getName() + "\\" + tmpCircuits.get(tmpCircuits.size()-1).getInterface().getName() + "\\OT" + "\\T01 ==> " + terminator.getName() + "\\IT");
 		
 		System.out.println();
 	}
@@ -696,7 +693,7 @@ public class AmaltheaToRCM {
 		Behaviour behaviour = new Behaviour(r.getName() + "_Entry");
 		Runtime runtime = new Runtime("DEFAULT");
 		
-		Interface iface = new Interface("Unnamed_Interface");
+		Interface iface = new Interface("Interface_" + circuit.getName());
 		PortTrigIn inTrig = new PortTrigIn("IT");
 		inTrig.setIndex(0);
 		PortTrigOut outTrig = new PortTrigOut("OT");
@@ -835,22 +832,22 @@ public class AmaltheaToRCM {
 	}
 	
 	
-	private String setupFolderStructure(boolean _extended) {
-		
-		String path = "output/RCM_Project";
-		
-		makeDirectory(path);
-		
-		if (_extended) {
-			// Common folder
-			makeDirectory(path + "/common");
-			
-			// Project name folder
-			makeDirectory(path + "/" + rcmModel.getSystem().getName());
-		}
-		
-		return path;
-	}
+//	private String setupFolderStructure(boolean _extended) {
+//		
+//		String path = "output/RCM_Project";
+//		
+//		makeDirectory(path);
+//		
+//		if (_extended) {
+//			// Common folder
+//			makeDirectory(path + "/common");
+//			
+//			// Project name folder
+//			makeDirectory(path + "/" + rcmModel.getSystem().getName());
+//		}
+//		
+//		return path;
+//	}
 	
 	/**
 	 * Create the directory if it does not exist yet

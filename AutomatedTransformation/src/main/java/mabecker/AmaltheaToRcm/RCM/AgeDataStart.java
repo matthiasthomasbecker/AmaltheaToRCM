@@ -14,11 +14,11 @@ public class AgeDataStart {
 	private PortDataIn	in;
 	private PortDataOut out;
 	
-	public AgeDataStart() {
-		name = "Age_" + count;
+	public AgeDataStart(String _name) {
+		name = "AgeStart=_" + count;
 		count++;
 		
-		nameUsage = "AgeConstraint";
+		nameUsage = "AgeConstraint_" + _name;
 		id = UUID.randomUUID();
 		
 		notes = new Notes("");

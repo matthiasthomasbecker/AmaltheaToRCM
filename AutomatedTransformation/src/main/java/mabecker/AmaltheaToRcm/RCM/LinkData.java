@@ -17,7 +17,7 @@ private static int count = 0;	//count the number of created links
 	private Label label;
 	
 	public LinkData(Label _label) {
-		name = "link_" + count;
+		name = "link_data_" + count;
 		indexLink = count;
 		count++;
 		id = UUID.randomUUID();
@@ -57,7 +57,7 @@ private static int count = 0;	//count the number of created links
 		
 		Element link = new Element("LinkData");
 		
-		link.setAttribute("Index", Integer.toString(indexLink));
+		link.setAttribute("IndexLink", Integer.toString(indexLink));
 		link.setAttribute("Name", name);
 		link.setAttribute("UUID", id.toString());
 		

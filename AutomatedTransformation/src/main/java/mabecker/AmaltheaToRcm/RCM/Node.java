@@ -55,6 +55,10 @@ public class Node {
 		return node;
 	}
 	
+	public UUID getId() {
+		return id;
+	}
+	
 	public Element toXmlReference() {
 		
 

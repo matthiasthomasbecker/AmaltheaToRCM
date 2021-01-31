@@ -170,7 +170,7 @@ public class Mode {
 				LinkData dataLink = getDataLink(inPort.getLabel());
 				
 				if (dataLink != null) {
-					CrossRef ref = new CrossRef("ObjectSource");
+					CrossRef ref = new CrossRef("ObjectDest");
 					ref.setReference(swc.getName() + "\\" + swc.getInterface().getName() + "\\" + inPort.getName());
 					dataLink.addCrossRef(ref);
 				} else {
