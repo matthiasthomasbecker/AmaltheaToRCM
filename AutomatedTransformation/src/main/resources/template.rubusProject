@@ -63,7 +63,7 @@
 			<ReferenceCross
 				Name="ActiveRoot"
 				Path=".\XXX_RUBUS_MODEL_NAME_XXX.rubusModel"
-				Reference="NXP_MPC5744P_Example4"
+				Reference="XXX_RUBUS_MODEL_NAME_XXX"
 				UUID="f0914cd2-3fa2-41ac-89e1-a65f7096cbc3"
 				>
 			</ReferenceCross>

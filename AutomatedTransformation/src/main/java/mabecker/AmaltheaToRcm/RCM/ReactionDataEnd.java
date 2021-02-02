@@ -16,7 +16,7 @@ public class ReactionDataEnd {
 	private PortDataOut out;
 	
 	public ReactionDataEnd(Time _deadline, String _name) {
-		name = "Reaction_" + count;
+		name = "ReactionEnd_" + count;
 		count++;
 		
 		nameUsage = "ReactionConstraint_" + _name;
@@ -45,6 +45,10 @@ public class ReactionDataEnd {
 	
 	public void setOut(PortDataOut out) {
 		this.out = out;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public Element getXml() {

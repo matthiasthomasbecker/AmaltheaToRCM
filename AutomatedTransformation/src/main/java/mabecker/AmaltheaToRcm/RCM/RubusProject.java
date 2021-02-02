@@ -29,6 +29,17 @@ public class RubusProject {
 		
 		BufferedReader reader;
 		
+		if (rcm.getSystem().getNodes().size() != 1) {
+			
+			System.err.println("RCM Project can only include 1 Node.");
+			return null;
+		} else {
+			if (rcm.getSystem().getNodes().get(0).getCores().size() != 1) {
+				System.err.println("RCM Project can only include 1 Core.");
+				return null;
+			}
+		}
+		
 		try {
 			FileWriter writer = new FileWriter(outputPath + "/" + rcm.getSystem().getName() + ".rubusProject");
 			reader = new BufferedReader(new FileReader("src/main/resources/template.rubusProject"));

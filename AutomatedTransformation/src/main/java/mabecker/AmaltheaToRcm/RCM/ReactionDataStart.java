@@ -14,7 +14,7 @@ public class ReactionDataStart {
 	private PortDataOut out;
 	
 	public ReactionDataStart(String _name) {
-		name = "Reaction_" + count;
+		name = "ReactionStart_" + count;
 		count++;
 		
 		nameUsage = "ReactionConstraint_" + _name;
@@ -48,7 +48,7 @@ public class ReactionDataStart {
 	}
 	
 	public Element getXml() {
-		Element ageStart = new Element("ReactionDataEnd");
+		Element ageStart = new Element("ReactionDataStart");
 		
 		ageStart.setAttribute("Name", name);
 		ageStart.setAttribute("NameUsage", nameUsage);

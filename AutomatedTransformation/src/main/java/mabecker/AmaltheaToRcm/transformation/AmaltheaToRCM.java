@@ -291,7 +291,7 @@ public class AmaltheaToRCM {
 		/* Add a data port to the end SWC */
 		int dataOutCount = _chainEnd.getInterface().getOutData().size() + 1;
 		PortDataOut dataOut = new PortDataOut("OD_" + Integer.toString(dataOutCount), null);
-		dataOut.setIndex(dataInCount - 1);
+		dataOut.setIndex(dataOutCount - 1);
 		dataOut.setDataPassingMethod("Automatic");
 		
 		ReferenceInst refOut = new ReferenceInst("Reference");
@@ -327,7 +327,7 @@ public class AmaltheaToRCM {
 			endSource.setReference(_chainEnd.getName() + "\\" + _chainEnd.getInterface().getName() + "\\" + dataOut.getName());
 			
 			CrossRef endDest = new CrossRef("ObjectDest");
-			endDest.setReference(reactionStart.getName() + "\\ID");
+			endDest.setReference(reactionEnd.getName() + "\\ID");
 			
 			endLink.addCrossRef(endSource);
 			endLink.addCrossRef(endDest);
@@ -737,6 +737,7 @@ public class AmaltheaToRCM {
 					
 					PortDataIn dataIn = new PortDataIn("ID_" + Integer.toString(dataInCount), label);
 					dataIn.setIndex(dataInCount - 1);
+					dataInCount++;
 					dataIn.setDataPassingMethod("Automatic");
 					
 					ReferenceInst ref = new ReferenceInst("Reference");
@@ -748,7 +749,8 @@ public class AmaltheaToRCM {
 					circuit.addInputData(dataIn);
 				} else if (access.getAccess() == LabelAccessEnum.WRITE) {
 					PortDataOut dataOut = new PortDataOut("OD_" + Integer.toString(dataOutCount), label);
-					dataOut.setIndex(dataInCount - 1);
+					dataOut.setIndex(dataOutCount - 1);
+					dataOutCount++;
 					dataOut.setDataPassingMethod("Automatic");
 					
 					ReferenceInst ref = new ReferenceInst("Reference");
