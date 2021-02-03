@@ -26,7 +26,7 @@ public class Mode {
 	private ArrayList<ReactionDataEnd> reactionEnd;
 	private ArrayList<AgeDataStart> ageStart;
 	private ArrayList<AgeDataEnd> ageEnd;
-	
+	private ArrayList<TrigPriority> priorities;
 	
 	public Mode(String _name) {
 		name = _name;
@@ -44,11 +44,16 @@ public class Mode {
 		reactionEnd = new ArrayList<ReactionDataEnd>();
 		ageStart = new ArrayList<AgeDataStart>();
 		ageEnd = new ArrayList<AgeDataEnd>();
+		priorities = new ArrayList<TrigPriority>();
 		
 		trigIn = new PortTrigIn("IT1");
 		trigIn.setIndex(0);
 		trigOut = new PortTrigOut("OT1");
 		trigOut.setIndex(0);
+	}
+	
+	public void addTrigPriority(TrigPriority _priority) {
+		priorities.add(_priority);
 	}
 	
 	public void addReactionStart(ReactionDataStart _start) {
@@ -99,6 +104,10 @@ public class Mode {
 		return name + "\\" + trigIn.getName();
 	}
 	
+	public String getModeOutputRef() {
+		return name + "\\" + trigOut.getName();
+	}
+	
 	public Element toXml() {
 		
 		Element mode = new Element("Mode");
@@ -145,6 +154,10 @@ public class Mode {
 		
 		for (ReactionDataEnd end : reactionEnd) {
 			mode.addContent(end.getXml());
+		}
+		
+		for (TrigPriority prio : priorities) {
+			mode.addContent(prio.toXml());
 		}
 		
 		return mode;

@@ -14,7 +14,9 @@ public class Application {
 	
 	private Mode mode;
 	private TrigStartMode trigStartMode;
-	private LinkTransition linkTransition;
+	private LinkTransition linkTransitionStart;
+	private TrigEndMode trigEndMode;
+	private LinkTransition linkTransitionEnd;
 	
 	public Application(String _name) {
 		name = _name;
@@ -25,10 +27,16 @@ public class Application {
 		
 		mode = new Mode("Mode");
 		trigStartMode = new TrigStartMode("StartMode");
-		linkTransition = new LinkTransition("link");
+		linkTransitionStart = new LinkTransition("linkModeIn");
 		
-		linkTransition.setOutput(mode.getModeInputRef());
-		linkTransition.setInput(trigStartMode.getTrigRef());
+		linkTransitionStart.setOutput(mode.getModeInputRef());
+		linkTransitionStart.setInput(trigStartMode.getTrigRef());
+		
+		trigEndMode = new TrigEndMode("EndMode");
+		linkTransitionEnd = new LinkTransition("linkModeOut");
+		
+		linkTransitionEnd.setOutput(trigEndMode.getTrigRef());
+		linkTransitionEnd.setInput(mode.getModeOutputRef());
 	}
 	
 	public Mode getMode() {
@@ -71,7 +79,9 @@ public class Application {
 		
 		partition.addContent(mode.toXml());
 		partition.addContent(trigStartMode.toXml());
-		partition.addContent(linkTransition.toXml());
+		partition.addContent(linkTransitionStart.toXml());
+		partition.addContent(trigEndMode.toXml());
+		partition.addContent(linkTransitionEnd.toXml());
 		return partition;
 	}
 }

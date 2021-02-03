@@ -30,6 +30,7 @@ import mabecker.AmaltheaToRcm.RCM.RubusProject;
 import mabecker.AmaltheaToRcm.RCM.Runtime;
 import mabecker.AmaltheaToRcm.RCM.Time;
 import mabecker.AmaltheaToRcm.RCM.TrigClockTT;
+import mabecker.AmaltheaToRcm.RCM.TrigPriority;
 import mabecker.AmaltheaToRcm.RCM.TrigTerminator;
 import mabecker.AmaltheaToRcm.RCM.OneAttributePerLineXmlProcessor;
 import mabecker.AmaltheaToRcm.RCM.PortDataIn;
@@ -53,6 +54,7 @@ import org.eclipse.app4mc.amalthea.model.LatencyType;
 import org.eclipse.app4mc.amalthea.model.ProcessingUnit;
 import org.eclipse.app4mc.amalthea.model.RunnableCall;
 import org.eclipse.app4mc.amalthea.model.SchedulerAllocation;
+import org.eclipse.app4mc.amalthea.model.SchedulingParameters;
 import org.eclipse.app4mc.amalthea.model.Stimulus;
 import org.eclipse.app4mc.amalthea.model.Runnable;
 import org.eclipse.app4mc.amalthea.model.StructureType;
@@ -613,16 +615,39 @@ public class AmaltheaToRCM {
 		System.out.println("RCM Clock: " + periodicTrigger.getName());
 		
 		/**
+		 * Create the priority element if a priority was assigned
+		 */
+		int priorityValue = getTaskPriority(t);
+		TrigPriority prio = null;
+		if (priorityValue != -1) {
+			prio = new TrigPriority(t.getName() + "_Priority", priorityValue);
+			core.getPartition().getApplication().getMode().addTrigPriority(prio);
+		}
+		
+		/**
 		 * Link all parts together to form the trigger chain
 		 */
 		for (int i = 0; i < tmpCircuits.size(); i++) {
 			if (i == 0) {
-				/**
-				 * The first task is connected to the periodic clock
-				 */
-				LinkTrig triggerLink = connect(periodicTrigger.getName() + "\\TO1", tmpCircuits.get(i).getName() + "\\" + tmpCircuits.get(i).getInterface().getName() + "\\IT");
-				System.out.println("RCM Link: " + periodicTrigger.getName() + "\\TO1 ==> " + tmpCircuits.get(i).getName() + "\\" + tmpCircuits.get(i).getInterface().getName() + "\\IT");
-				core.getPartition().getApplication().getMode().addLinkTrigs(triggerLink);
+				if (prio == null) {
+					/**
+					 * The first task is connected to the periodic clock
+					 */
+					LinkTrig triggerLink = connect(periodicTrigger.getName() + "\\TO1", tmpCircuits.get(i).getName() + "\\" + tmpCircuits.get(i).getInterface().getName() + "\\IT");
+					System.out.println("RCM Link: " + periodicTrigger.getName() + "\\TO1 ==> " + tmpCircuits.get(i).getName() + "\\" + tmpCircuits.get(i).getInterface().getName() + "\\IT");
+					core.getPartition().getApplication().getMode().addLinkTrigs(triggerLink);
+				} else {
+					/**
+					 * The first task is connected to the periodic clock via the priority element
+					 */
+					LinkTrig triggerLinkClockPrio = connect(periodicTrigger.getName() + "\\TO1", prio.getName() + "\\" + prio.getTrigInPort().getName());
+					System.out.println("RCM Link: " + periodicTrigger.getName() + "\\TO1 ==> " + prio.getName() + "\\" + prio.getTrigInPort().getName());
+					core.getPartition().getApplication().getMode().addLinkTrigs(triggerLinkClockPrio);
+					
+					LinkTrig triggerLinkPrioSwc = connect(prio.getName() + "\\" + prio.getGetOutPort().getName(), tmpCircuits.get(i).getName() + "\\" + tmpCircuits.get(i).getInterface().getName() + "\\IT");
+					System.out.println("RCM Link: " + prio.getName() + "\\" + prio.getGetOutPort().getName() + " ==> " + tmpCircuits.get(i).getName() + "\\" + tmpCircuits.get(i).getInterface().getName() + "\\IT");
+					core.getPartition().getApplication().getMode().addLinkTrigs(triggerLinkPrioSwc);
+				}
 			} else {
 				/**
 				 * All remaining circuits are triggered in a trigger chain
@@ -649,6 +674,24 @@ public class AmaltheaToRCM {
 		System.out.println("RCM Link: " + tmpCircuits.get(tmpCircuits.size()-1).getName() + "\\" + tmpCircuits.get(tmpCircuits.size()-1).getInterface().getName() + "\\OT" + "\\T01 ==> " + terminator.getName() + "\\IT");
 		
 		System.out.println();
+	}
+
+	/**
+	 * This is a helper method that returns the priority of a task.
+	 * @param _task Task
+	 * @return Returns the assigned priority or -1.
+	 */
+	private int getTaskPriority(Task _task) {
+		int retval = -1;
+		
+		for (TaskAllocation alloc : amaltheaModel.getMappingModel().getTaskAllocation()) {
+			if (alloc.getTask().equals(_task)) {
+				SchedulingParameters params = alloc.getSchedulingParameters();
+				retval = params.getPriority().intValue();
+			}
+		}
+		
+		return retval;
 	}
 
 	/**
