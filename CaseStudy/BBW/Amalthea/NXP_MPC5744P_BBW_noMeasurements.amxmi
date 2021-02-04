@@ -82,7 +82,7 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="ABS_FL_Sig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="15000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="22500"/>
         </items>
         <items xsi:type="am:LabelAccess" data="Brake_FL_Sig?type=Label" access="write" implementation="implicit"/>
       </activityGraph>
@@ -91,7 +91,7 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="ABS_FR_Sig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="15000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="22500"/>
         </items>
         <items xsi:type="am:LabelAccess" data="Brake_FR_Sig?type=Label" access="write" implementation="implicit"/>
       </activityGraph>
@@ -100,7 +100,7 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="ABS_RL_Sig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="15000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="22500"/>
         </items>
         <items xsi:type="am:LabelAccess" data="Brake_RL_Sig?type=Label" access="write" implementation="implicit"/>
       </activityGraph>
@@ -109,7 +109,7 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="ABS_RR_Sig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="15000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="22500"/>
         </items>
         <items xsi:type="am:LabelAccess" data="Brake_RR_Sig?type=Label" access="write" implementation="implicit"/>
       </activityGraph>
@@ -118,7 +118,7 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="TorqueSig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="12000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="18000"/>
         </items>
         <items xsi:type="am:LabelAccess" data="ABS_FL_Sig?type=Label" access="write" implementation="implicit"/>
         <items xsi:type="am:LabelAccess" data="ABS_FR_Sig?type=Label" access="write" implementation="implicit"/>
@@ -129,7 +129,7 @@
     <runnables xmi:id="BrakePedalLDM_T?type=Runnable" name="BrakePedalLDM_T" callback="false" service="false">
       <activityGraph>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="6000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="9000"/>
         </items>
         <items xsi:type="am:LabelAccess" data="BrakeSig?type=Label" access="write" implementation="implicit"/>
       </activityGraph>
@@ -138,7 +138,7 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="BrakeSig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="9000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="13500"/>
         </items>
         <items xsi:type="am:LabelAccess" data="TorqueSig?type=Label" access="write" implementation="implicit"/>
       </activityGraph>
@@ -147,7 +147,7 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="Brake_FL_Sig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="18000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="27000"/>
         </items>
       </activityGraph>
     </runnables>
@@ -155,7 +155,7 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="Brake_FR_Sig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="18000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="27000"/>
         </items>
       </activityGraph>
     </runnables>
@@ -163,14 +163,14 @@
       <activityGraph>
         <items xsi:type="am:LabelAccess" data="Brake_RL_Sig?type=Label" access="read" implementation="implicit"/>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="18000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="27000"/>
         </items>
       </activityGraph>
     </runnables>
     <runnables xmi:id="BrakeActuator_RR_LDM?type=Runnable" name="BrakeActuator_RR_LDM" callback="false" service="false">
       <activityGraph>
         <items xsi:type="am:Ticks">
-          <default xsi:type="am:DiscreteValueConstant" value="18000"/>
+          <default xsi:type="am:DiscreteValueConstant" value="27000"/>
         </items>
         <items xsi:type="am:LabelAccess" data="Brake_RR_Sig?type=Label" access="read" implementation="implicit"/>
       </activityGraph>
