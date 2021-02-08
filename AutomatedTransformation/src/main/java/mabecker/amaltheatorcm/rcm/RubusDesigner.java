@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.UUID;
 
 public class RubusDesigner {
@@ -28,7 +30,11 @@ public class RubusDesigner {
 		
 		try {
 			FileWriter writer = new FileWriter(outputBase + "/" + rcm.getSystem().getName() + ".rubusDesigner");
-			reader = new BufferedReader(new FileReader("src/main/resources/template.rubusDesigner"));
+			
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			InputStream is = classloader.getResourceAsStream("template.rubusDesigner");
+			
+			reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 			String line = reader.readLine();
 			while (line != null) {
 				

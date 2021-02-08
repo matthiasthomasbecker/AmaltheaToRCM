@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.UUID;
 
 public class RubusProject {
@@ -42,7 +44,11 @@ public class RubusProject {
 		
 		try {
 			FileWriter writer = new FileWriter(outputPath + "/" + rcm.getSystem().getName() + ".rubusProject");
-			reader = new BufferedReader(new FileReader("src/main/resources/template.rubusProject"));
+			
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			InputStream is = classloader.getResourceAsStream("template.rubusProject");
+			
+			reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 			String line = reader.readLine();
 			while (line != null) {
 				//System.out.println(line);
