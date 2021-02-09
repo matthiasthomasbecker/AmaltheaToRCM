@@ -27,12 +27,14 @@ public class BackAnnotation {
 
 	private String rcmFolder;
 	private String amaltheaPath;
+	private String modelName;
 	private Amalthea amalthea;
 	
-	public BackAnnotation(String _rcmFolder, String _amaltheaPath, Amalthea _amalthea) {
+	public BackAnnotation(String _rcmFolder, String _amaltheaPath, Amalthea _amalthea, String _modelName) {
 		rcmFolder = _rcmFolder;
 		amaltheaPath = _amaltheaPath;
 		amalthea = _amalthea;
+		modelName = _modelName;
 	}
 	
 	/**
@@ -40,7 +42,7 @@ public class BackAnnotation {
 	 */
 	public void annotate() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(rcmFolder + "/Report/Network Analyzer.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader(rcmFolder + "/obj/" + modelName + "/reports/Network Analyzer.txt"));
 			
 			String line = reader.readLine();
 			boolean start = false;
@@ -87,9 +89,10 @@ public class BackAnnotation {
 	 * @param _constraintName Name of the timing constraint
 	 * @param _value	Bound calculated by the RCM timing analysis
 	 */
-	private void annotateAmaltheaModel(String _constraintName, long _value, String _unit) {
+	private void annotateAmaltheaModel(String _rcmConstraintName, long _value, String _unit) {
 		final AmaltheaFactory fac = AmaltheaFactory.eINSTANCE;
-			
+		
+		String amaltheaChainName = _rcmConstraintName.replaceAll("ReactionConstraint_", "");
 		/**
 		 * First we get the Amalthea measurement model.
 		 * If the model does not yet exist we add it. 
@@ -109,10 +112,13 @@ public class BackAnnotation {
 		
 		for (TimingConstraint constr : constraints.getTimingConstraints()) {
 			
-			if (constr.getName().equals(_constraintName)) {
-				/* Found the constraint in the Amalthea model */
-				constraint = constr;
-				break;
+			if (constr instanceof EventChainLatencyConstraint) {
+				EventChainLatencyConstraint evtConstr = (EventChainLatencyConstraint) constr;
+				if (evtConstr.getScope().getName().equals(amaltheaChainName)) { 
+					/* Found the constraint in the Amalthea model */
+					constraint = constr;
+					break;
+				}
 			}
 		}
 		
@@ -157,7 +163,7 @@ public class BackAnnotation {
 				measurements.getMeasurements().add(measurement);
 			}
 		} else {
-			System.err.println("Error: Constraint " + _constraintName + " is not part of the Amalthea model!");
+			System.err.println("Error: Constraint " + _rcmConstraintName + " is not part of the Amalthea model!");
 			System.exit(1);
 		}
 	}

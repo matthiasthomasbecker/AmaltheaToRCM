@@ -79,7 +79,7 @@ public class App {
 	         */
 	        else if (backannotate) {
 	        	double startAnnotateTime = System.nanoTime();
-	        	BackAnnotation back = new BackAnnotation(rcmPath, amaltheaModel, model);
+	        	BackAnnotation back = new BackAnnotation(rcmPath, amaltheaModel, model, getFileNameWithoutExtension(inputFile));
 	        	back.annotate();
 	        	double endTime = System.nanoTime();
 	        	
