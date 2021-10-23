@@ -18,8 +18,13 @@ This case study is the <a href="https://www.ecrts.org/archives/index652a.html?id
 The WATERS 2017 Amalthea model has been modified as follows:
   * Migrated to version 0.9.7
   * Added the unit "Hz" to the clock domain
-  * Removed the feature "accessElement" from the model as it was no longer supported after model migration. 
-
+  * Removed the feature "accessElement" from the model as it was no longer supported after model migration.
+* <b>Democar</b>
+This application is distributed with Amalthea and describes a simplified Engine Management System. The application consists of 43 runnables that are mapped to 3 tasks.
+Communication is realised via 71 communication labels.
+The Democar model has been modified as follows:
+  * Created a mapping model that allocates the three tasks to the operating system, as well as the operating system to the processor.
+  * Increased the system clock frequency to 600MHz as the initial system has a utilization > 1 using the provided WCETs.
 ## Expert Interviews
 
 Results of the expert interviews that have been conducted to evaluate the industrial relevance of the work. The interviews were conducted as online survey and consist of 10 questions.

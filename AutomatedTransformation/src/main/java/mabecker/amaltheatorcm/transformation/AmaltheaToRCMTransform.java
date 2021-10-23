@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) Matthias Becker Royal Institute of Technology, Sweden, Alessio Bucaioni Malardalen University, Sweden.
+ * All rights reserved.
+ * See LICENSE file for copyright and license details.
+ * 
+ * This file is part of the artifact of the publication https://doi.org/10.1016/j.jss.2021.111106
+ */
 package mabecker.amaltheatorcm.transformation;
 
 import java.io.File;
@@ -79,17 +86,13 @@ public class AmaltheaToRCMTransform {
 	private RCM			rcmModel;
 	private String 		name;
 	
-	//private ArrayList<Circuit> allCircuits;
-	
 	public AmaltheaToRCMTransform(Amalthea _model, String _name) {
 		if (_model == null) {
 			System.err.println("AmaltheaToRCM: model is null");
 			System.exit(1);
 		}
 		amaltheaModel = _model;
-		name = _name;
-		
-		//allCircuits = new ArrayList<Circuit>();
+		name = _name;		
 	}
 	
 	public void tranformModel() {
@@ -113,15 +116,6 @@ public class AmaltheaToRCMTransform {
         for (HwStructure hw : amaltheaModel.getHwModel().getStructures()) {
         	addNode(hw);
         }
-		
-        /**
-         * Parse all runnables, each of which will be represented as SWC
-         */
-     /*   for (Runnable runnable : amaltheaModel.getSwModel().getRunnables()) {
-        	Circuit swc = runnableToCircuit(runnable, null);
-        	System.out.println("RCM SWC:" + swc.getName());
-        	allCircuits.add(swc);
-        }*/
         
         /**
          * Create the RCM representation of each task. 
@@ -867,24 +861,6 @@ public class AmaltheaToRCMTransform {
 			e.printStackTrace();
 		}	
 	}
-	
-	
-//	private String setupFolderStructure(boolean _extended) {
-//		
-//		String path = "output/RCM_Project";
-//		
-//		makeDirectory(path);
-//		
-//		if (_extended) {
-//			// Common folder
-//			makeDirectory(path + "/common");
-//			
-//			// Project name folder
-//			makeDirectory(path + "/" + rcmModel.getSystem().getName());
-//		}
-//		
-//		return path;
-//	}
 	
 	/**
 	 * Create the directory if it does not exist yet
