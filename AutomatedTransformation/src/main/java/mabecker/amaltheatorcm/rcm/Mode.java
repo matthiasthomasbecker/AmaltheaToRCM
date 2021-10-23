@@ -172,9 +172,15 @@ public class Mode extends BaseElement{
 				LinkData dataLink = getDataLink(inPort.getLabel());
 				
 				if (dataLink != null) {
-					CrossRef ref = new CrossRef("ObjectDest");
-					ref.setReference(swc.getName() + "\\" + swc.getInterface().getName() + "\\" + inPort.getName());
-					dataLink.addCrossRef(ref);
+					
+					if (hasDestination(dataLink.getLabel())) {
+						System.err.println("Label " + inPort.getLabel().getName() + " on core " + getName() + " has already a destination...");
+					} else {
+						//create the destination for the data link
+						CrossRef ref = new CrossRef("ObjectDest");
+						ref.setReference(swc.getName() + "\\" + swc.getInterface().getName() + "\\" + inPort.getName());
+						dataLink.addCrossRef(ref);
+					}
 				} else {
 					System.err.println("No writing SWC for Label " + inPort.getLabel().getName() + " on core " + getName());
 					//System.exit(1);
@@ -182,6 +188,13 @@ public class Mode extends BaseElement{
 			}
 		}
 		
+		ArrayList<LinkData> tmp = new ArrayList<LinkData>();
+		for (LinkData link : dataLinks) {
+			if (link.getCrossrefs().size() == 1) {
+				tmp.add(link);
+			}
+		}
+		dataLinks.removeAll(tmp);
 	}
 	
 	public ArrayList<LinkData> getDataLinks() {
@@ -197,5 +210,20 @@ public class Mode extends BaseElement{
 		}
 		
 		return null;
+	}
+	
+	private boolean hasDestination(Label label) {
+		
+		for (LinkData link : dataLinks) {
+			if (link.getLabel().equals(label)) {
+				for (CrossRef ref : link.getCrossrefs()) {
+					if (ref.getName().equals("ObjectDest")) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 }

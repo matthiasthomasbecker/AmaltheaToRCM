@@ -192,7 +192,8 @@ public class AmaltheaToRCMTransform {
 					if (stimuliName != null && responseName != null) {
 						if (chainStartName == null){
 							chainStartName = stimuliName;
-						} else {
+						} 
+						if (chainEndName == null){
 							chainEndName = responseName;
 						}
 					}

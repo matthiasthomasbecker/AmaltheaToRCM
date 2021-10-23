@@ -46,6 +46,10 @@ public class LinkData extends BaseElement{
 		crossrefs.add(_crossRef);
 	}
 
+	public ArrayList<CrossRef> getCrossrefs() {
+		return crossrefs;
+	}
+	
 	@Override
 	public String toString() {
 		String retval = "RCM LinkData: ";

@@ -456,7 +456,7 @@
   <measurementModel>
     <measurements xsi:type="am:EventChainMeasurement" eventChain="EC_Sequence_FL?type=EventChain">
       <customProperties key="Worst-Case Reaction Time">
-        <value xsi:type="am:Time" value="20359" unit="us"/>
+        <value xsi:type="am:Time" value="20300" unit="us"/>
       </customProperties>
       <customProperties key="Creator">
         <value xsi:type="am:StringObject" value="Rubus-ICE"/>
@@ -464,7 +464,7 @@
     </measurements>
     <measurements xsi:type="am:EventChainMeasurement" eventChain="EC_Sequence_FR?type=EventChain">
       <customProperties key="Worst-Case Reaction Time">
-        <value xsi:type="am:Time" value="20267" unit="us"/>
+        <value xsi:type="am:Time" value="20090" unit="us"/>
       </customProperties>
       <customProperties key="Creator">
         <value xsi:type="am:StringObject" value="Rubus-ICE"/>
@@ -472,7 +472,7 @@
     </measurements>
     <measurements xsi:type="am:EventChainMeasurement" eventChain="EC_Sequence_RL?type=EventChain">
       <customProperties key="Worst-Case Reaction Time">
-        <value xsi:type="am:Time" value="20177" unit="us"/>
+        <value xsi:type="am:Time" value="20" unit="ms"/>
       </customProperties>
       <customProperties key="Creator">
         <value xsi:type="am:StringObject" value="Rubus-ICE"/>
@@ -480,7 +480,7 @@
     </measurements>
     <measurements xsi:type="am:EventChainMeasurement" eventChain="EC_Sequence_RR?type=EventChain">
       <customProperties key="Worst-Case Reaction Time">
-        <value xsi:type="am:Time" value="20087" unit="us"/>
+        <value xsi:type="am:Time" value="19910" unit="us"/>
       </customProperties>
       <customProperties key="Creator">
         <value xsi:type="am:StringObject" value="Rubus-ICE"/>
